@@ -1,9 +1,9 @@
 import { Server } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { ConfigurationProvider } from "../providers/configuration.provider";
+import { MockDb } from "../providers/mock-db";
 import { GameConfiguration } from "../types/game-configuration";
 import { ScoreRange } from "../types/score-range";
-import { MockDb } from "../providers/mock-db";
 import { getRandomNumber } from "../utils/score-utilities";
 
 export class WebsocketService {
@@ -19,8 +19,8 @@ export class WebsocketService {
       any
     >
   ) {}
+
   public async init(): Promise<void> {
-    // get config
     const gameConfig: GameConfiguration = await this.configProvider.get();
     this.db.config = gameConfig;
     const { pollingFrequency, scoreRange } = gameConfig;

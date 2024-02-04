@@ -1,7 +1,8 @@
 import express from "express";
 import authRouter from "./routes/auth.router";
 
-import { Server, Socket } from "socket.io";
+import { Server } from "socket.io";
+import { isRegisteredWsMiddleware } from "./middlewares/is-registered-middleware";
 import { WebsocketService } from "./services/websocket.service";
 var bodyParser = require("body-parser");
 const app = express();
@@ -12,12 +13,24 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use("/api/auth", authRouter);
 
-const server = app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+app.get("/", (req, res) => {
+  res.send("HELLO");
 });
 
-const io = new Server(server);
+const server = app.listen(port, () => {
+  console.log(`Server is running at port: ${port}`);
+});
+
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
 const wsHandler = new WebsocketService(io);
+
+io.use(isRegisteredWsMiddleware);
+
 io.on("connection", wsHandler.websocketConnectHandler);
 io.on("disconnect", wsHandler.websocketDisconnectHandler);
 

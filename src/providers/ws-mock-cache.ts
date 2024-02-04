@@ -1,14 +1,14 @@
-export class WsMockCache {
-  private static instance: WsMockCache | null = null;
+export class MockCache {
+  private static instance: MockCache | null = null;
   private clients = new Set();
 
   private constructor() {}
 
-  static getInstance(): WsMockCache {
-    if (!WsMockCache.instance) {
-      WsMockCache.instance = new WsMockCache();
+  static getInstance(): MockCache {
+    if (!MockCache.instance) {
+      MockCache.instance = new MockCache();
     }
-    return WsMockCache.instance;
+    return MockCache.instance;
   }
 
   get(id: string) {}
