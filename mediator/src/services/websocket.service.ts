@@ -34,19 +34,15 @@ export class WebsocketService {
     }, pollingFrequency * 1000);
   }
 
-  private subscribeClient = (clientId: string) => {};
-
-  private unsubscribeClient = () => {};
-
   websocketConnectHandler = (socket: any) => {
     const { id } = socket;
     const { clientid } = socket.request?._query;
-    console.log("Connecting", socket.request._query);
+    socket.on("disconnect", this.websocketDisconnectHandler);
+    console.log("Websocket Connected", { clientid, id });
   };
 
-  websocketDisconnectHandler = (socket: any) => {
-    const { id } = socket;
-    console.log("Disconnecting", socket.request._query);
+  websocketDisconnectHandler = (reason: any) => {
+    console.log("Websocket disconnected", { reason });
   };
 
   public stopInterval() {

@@ -8,12 +8,8 @@ export class AuthController {
   constructor() {}
 
   register = (req: Request, res: Response): void => {
-    try {
-      const registerData: RegisteredUserDto = req.body;
-      const clientId = this.authService.register(registerData);
-      res.status(201).json({ clientId });
-    } catch (err) {
-      res.json({ error: err });
-    }
+    const registerData: RegisteredUserDto = req.body;
+    const clientId = this.authService.register(registerData);
+    res.status(201).json({ clientId });
   };
 }

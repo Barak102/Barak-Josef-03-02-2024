@@ -1,4 +1,5 @@
 import { DatabaseProvider } from "../providers/database-provider";
+import { ClientNotAllowedError } from "../types/exceptions/client-not-allowed.exception";
 import { RegisteredUserDto } from "../types/registered-user.dto";
 
 export class AuthService {
@@ -9,10 +10,8 @@ export class AuthService {
     this.db.getAllowedClients()?.some((c) => c.id === clientId);
 
   register = (register: RegisteredUserDto) => {
-    const allowedClients = this.db.getAllowedClients();
-
     if (!this.isClientAllowed(register.clientId)) {
-      throw new Error("Client not allowed!!!");
+      throw new ClientNotAllowedError(register.clientId);
     }
     const result = this.db.createClient(register);
     return result;
